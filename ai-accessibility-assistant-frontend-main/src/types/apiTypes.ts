@@ -35,7 +35,7 @@ export interface SimplifyResponse {
 export interface ProgressResponse {
   total_sessions: number;
   average_cognitive_score: number;
-  last_session_score: number;
+  last_score: number;
   preferred_level: string;
 }
 

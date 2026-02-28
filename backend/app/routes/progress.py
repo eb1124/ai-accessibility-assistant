@@ -19,7 +19,7 @@ def get_progress(user_id: str):
     return {
         "user_id": user.user_id,
         "preferred_level": user.preferred_level,
-        "average_cognitive_score": user.avg_cognitive_score,
+        "average_cognitive_score": f"{user.avg_cognitive_score:.2f}",
         "last_score": user.last_score,
         "total_sessions": user.total_sessions
     }

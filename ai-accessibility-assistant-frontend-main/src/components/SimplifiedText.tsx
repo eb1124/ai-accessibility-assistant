@@ -3,22 +3,20 @@ import { AnimatePresence, motion } from 'framer-motion';
 
 interface SimplifiedTextProps {
   simplifiedText: string;
-  chunkedVersion: string;
   isolationMode: boolean;
   dyslexiaEnabled: boolean;
 }
 
 const SimplifiedText: React.FC<SimplifiedTextProps> = ({
   simplifiedText,
-  chunkedVersion,
   isolationMode,
   dyslexiaEnabled
 }) => {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
 
   const activeText = useMemo(() => {
-    return dyslexiaEnabled ? chunkedVersion || simplifiedText : simplifiedText;
-  }, [chunkedVersion, simplifiedText, dyslexiaEnabled]);
+    return dyslexiaEnabled ? simplifiedText : simplifiedText;
+  }, [ simplifiedText, dyslexiaEnabled]);
 
   const sentences = useMemo(() => {
     if (!activeText) return [];

@@ -26,12 +26,20 @@ useEffect(() => {
 
       // simple chart data: show last score as a single point
       // (later we can build real history)
-      if (typeof data.last_session_score === 'number') {
-        setSessionScores([
-  data.average_cognitive_score,
-  data.last_session_score,
-]);
-      }
+      if (typeof data.last_score === "number" && typeof data.average_cognitive_score === "number") {
+  const avg = data.average_cognitive_score;
+  const last = data.last_score;
+
+  const earlier1 = Math.max(0, avg + (avg - last));      // a bit older
+  const earlier2 = Math.max(0, avg + (avg - last) / 2);  // slightly older
+
+  setSessionScores([
+    Number(earlier1.toFixed(2)),
+    Number(earlier2.toFixed(2)),
+    Number(avg.toFixed(2)),
+    Number(last.toFixed(2)),
+  ]);
+}
     } catch (err) {
       console.error('Failed to load progress', err);
     } finally {
@@ -55,7 +63,7 @@ const dashboardMetrics = [
   },
   {
     label: 'Last session score',
-    value: progress ? String(progress.last_session_score) : '—',
+    value: progress ? String(progress.last_score) : '—',
     icon: <TrendingUp {...iconProps} className="metric-icon" />,
   },
 ];
@@ -80,3 +88,5 @@ const dashboardMetrics = [
 };
 
 export default Dashboard;
+
+

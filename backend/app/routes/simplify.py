@@ -24,6 +24,7 @@ class SimplifyRequest(BaseModel):
 
 
 @router.post("/simplify")
+
 def simplify(request: SimplifyRequest):
 
     # 1️⃣ Analyze original

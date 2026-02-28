@@ -12,7 +12,12 @@ interface SimplifierProps {
   userId: string;
   onUserIdChange: (id: string) => void;
 }
-
+const addToHistory = (newSession: any) => {
+  const raw = localStorage.getItem("sessions");
+  const existing = raw ? JSON.parse(raw) : [];
+  const updated = [newSession, ...existing];
+  localStorage.setItem("sessions", JSON.stringify(updated));
+};
 const Simplifier: React.FC<SimplifierProps> = ({ userId, onUserIdChange }) => {
   const [profile, setProfile] = useState<UserProfile>('default');
   const [text, setText] = useState<string>('');
@@ -70,8 +75,18 @@ const Simplifier: React.FC<SimplifierProps> = ({ userId, onUserIdChange }) => {
     difficulty,
     reduction_percent: reductionPercent,
   });
+  addToHistory({
+  id: Date.now(),
+  date: new Date().toLocaleDateString(undefined, { month: "short", day: "numeric" }),
+  scoreBefore: originalScore,
+  scoreAfter: data.cognitive_score,
+  difficultyBefore: difficulty,
+  difficultyAfter: difficulty,
+  original: text,
+  simplified: data.simplified_text,
+  audioUrl: data.audio_file || undefined,
+});
   
-
 } catch (e) {
   setError('Unable to fetch simplified content. Please try again.');
 } finally {
@@ -115,7 +130,6 @@ const Simplifier: React.FC<SimplifierProps> = ({ userId, onUserIdChange }) => {
   <div className="app-reading-body">
     <SimplifiedText
       simplifiedText={result?.simplified_text ?? ''}
-      chunkedVersion={result?.chunked_version ?? ''}
       isolationMode={result?.isolation_mode ?? false}
       dyslexiaEnabled={dyslexiaEnabled}
     />
